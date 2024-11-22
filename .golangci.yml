@@ -1,6 +1,6 @@
 # See https://github.com/golangci/golangci-lint/blob/master/.golangci.example.yml
 run:
-  go: 1.19
+  go: 1.23.3
   tests: true
 
 linters-settings:
@@ -31,31 +31,28 @@ linters:
   disable:
     - contextcheck
     - lll
-    - maligned # deprecated
     - gochecknoglobals
     - gomnd
     - wrapcheck
     - paralleltest
     - forbidigo
-    - exhaustivestruct
-    - interfacer # deprecated
     - forcetypeassert
-    - scopelint # deprecated
-    - ifshort # too many false positives
-    - golint # deprecated
     - varnamelen
     - tagliatelle
     - errname
     - ireturn
     - testpackage
-    - structcheck # deprecated
-    - nosnakecase # deprecated
-    - deadcode # deprecated
-    - varcheck # deprecated
     - exhaustruct
     - rowserrcheck # disabled because of generics. You can track the evolution of the generics support by following the https://github.com/golangci/golangci-lint/issues/2649.
     - sqlclosecheck # disabled because of generics. You can track the evolution of the generics support by following the https://github.com/golangci/golangci-lint/issues/2649.
     - wastedassign # disabled because of generics. You can track the evolution of the generics support by following the https://github.com/golangci/golangci-lint/issues/2649.
+    - tagalign
+    - depguard
+    - perfsprint
+    - mnd
+    - err113
+    - exportloopref # deprecated https://golangci-lint.run/product/roadmap/#linter-deprecation-cycle
+    - execinquery # deprecated https://golangci-lint.run/product/roadmap/#linter-deprecation-cycle
 
 issues:
   exclude-use-default: false

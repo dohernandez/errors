@@ -159,7 +159,6 @@ func Cause(err error) error {
 		Cause() error
 	}
 
-	//nolint:errorlint
 	cause, ok := err.(causer)
 	if !ok {
 		return nil
