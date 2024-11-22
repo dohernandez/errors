@@ -102,9 +102,9 @@ func TestWrapError(t *testing.T) {
 		require.Error(t, errWrap, "it is not an error")
 
 		expected := "oops"
-		assert.EqualError(t, errWrap, expected, "error message mismatch, got %s want %s", errWrap, expected)
+		require.EqualError(t, errWrap, expected, "error message mismatch, got %s want %s", errWrap, expected)
 
-		assert.Equal(t, sErr, errWrap)
+		require.Equal(t, sErr, errWrap)
 	})
 
 	t.Run("WrapWithError with supplied nil", func(t *testing.T) {
@@ -116,9 +116,9 @@ func TestWrapError(t *testing.T) {
 		require.Error(t, errWrap, "it is not an error")
 
 		expected := "oops"
-		assert.EqualError(t, errWrap, expected, "error message mismatch, got %s want %s", errWrap, expected)
+		require.EqualError(t, errWrap, expected, "error message mismatch, got %s want %s", errWrap, expected)
 
-		assert.Equal(t, err, errWrap)
+		require.Equal(t, err, errWrap)
 	})
 }
 
@@ -139,12 +139,11 @@ func TestEnriched(t *testing.T) {
 		require.Error(t, errEnriched, "it is not an error")
 
 		expected := "failed"
-		assert.EqualError(t, errEnriched, expected, "error message mismatch, got %s want %s", errEnriched, expected)
+		require.EqualError(t, errEnriched, expected, "error message mismatch, got %s want %s", errEnriched, expected)
 
-		//nolint:errorlint
 		errKV, ok := errEnriched.(enrichedError)
-		assert.True(t, ok, "error does not implement enrichedError interface")
-		assert.Equal(t, []interface{}{"id", 5}, errKV.Tuples())
+		require.True(t, ok, "error does not implement enrichedError interface")
+		require.Equal(t, []interface{}{"id", 5}, errKV.Tuples())
 	})
 
 	t.Run("Enrich error and wrap", func(t *testing.T) {
@@ -158,12 +157,11 @@ func TestEnriched(t *testing.T) {
 		sErr := errors.WrapError(errors.New("oops"), errEnriched)
 
 		expected := "failed: oops"
-		assert.EqualError(t, sErr, expected, "error message mismatch, got %s want %s", sErr, expected)
+		require.EqualError(t, sErr, expected, "error message mismatch, got %s want %s", sErr, expected)
 
-		//nolint:errorlint
 		errKV, ok := errEnriched.(enrichedError)
-		assert.True(t, ok, "error does not implement enrichedError interface")
-		assert.Equal(t, []interface{}{"id", 5}, errKV.Tuples())
+		require.True(t, ok, "error does not implement enrichedError interface")
+		require.Equal(t, []interface{}{"id", 5}, errKV.Tuples())
 	})
 
 	t.Run("Enrich error, malformed", func(t *testing.T) {
@@ -175,11 +173,10 @@ func TestEnriched(t *testing.T) {
 		require.Error(t, errEnriched, "it is not an error")
 
 		expected := "failed"
-		assert.EqualError(t, errEnriched, expected, "error message mismatch, got %s want %s", errEnriched, expected)
+		require.EqualError(t, errEnriched, expected, "error message mismatch, got %s want %s", errEnriched, expected)
 
-		//nolint:errorlint
 		_, ok := errEnriched.(enrichedError)
-		assert.False(t, ok, "error does implement enrichedError interface")
+		require.False(t, ok, "error does implement enrichedError interface")
 	})
 
 	t.Run("EnrichWrapWithError error", func(t *testing.T) {
@@ -195,12 +192,11 @@ func TestEnriched(t *testing.T) {
 		require.ErrorIs(t, errEnrichedWrap, err)
 
 		expected := "oops: failed"
-		assert.EqualError(t, errEnrichedWrap, expected, "error message mismatch, got %s want %s", errEnrichedWrap, expected)
+		require.EqualError(t, errEnrichedWrap, expected, "error message mismatch, got %s want %s", errEnrichedWrap, expected)
 
-		//nolint:errorlint
 		errKV, ok := errEnrichedWrap.(enrichedError)
-		assert.True(t, ok, "error does not implement enrichedError interface")
-		assert.Equal(t, []interface{}{"id", 5}, errKV.Tuples())
+		require.True(t, ok, "error does not implement enrichedError interface")
+		require.Equal(t, []interface{}{"id", 5}, errKV.Tuples())
 	})
 
 	t.Run("Enrich enriched error", func(t *testing.T) {
@@ -215,20 +211,18 @@ func TestEnriched(t *testing.T) {
 		require.Error(t, errEnriched2, "it is not an error")
 
 		expected := "failed"
-		assert.EqualError(t, errEnriched, expected, "error message mismatch, got %s want %s", errEnriched, expected)
+		require.EqualError(t, errEnriched, expected, "error message mismatch, got %s want %s", errEnriched, expected)
 
-		//nolint:errorlint
 		errKV, ok := errEnriched.(enrichedError)
-		assert.True(t, ok, "error does not implement enrichedError interface")
-		assert.Equal(t, []interface{}{"id", 5}, errKV.Tuples())
+		require.True(t, ok, "error does not implement enrichedError interface")
+		require.Equal(t, []interface{}{"id", 5}, errKV.Tuples())
 
 		expected2 := "failed"
-		assert.EqualError(t, errEnriched2, expected2, "error message mismatch, got %s want %s", errEnriched, expected)
+		require.EqualError(t, errEnriched2, expected2, "error message mismatch, got %s want %s", errEnriched, expected)
 
-		//nolint:errorlint
 		errKV, ok = errEnriched2.(enrichedError)
-		assert.True(t, ok, "error does not implement enrichedError interface")
-		assert.Equal(t, []interface{}{"number", 6, "hash", "0X0", "id", 5}, errKV.Tuples())
+		require.True(t, ok, "error does not implement enrichedError interface")
+		require.Equal(t, []interface{}{"number", 6, "hash", "0X0", "id", 5}, errKV.Tuples())
 	})
 
 	t.Run("Enrich enriched cause error", func(t *testing.T) {
@@ -243,20 +237,18 @@ func TestEnriched(t *testing.T) {
 		require.Error(t, errEnriched2)
 
 		expected := "stream blocks: failed"
-		assert.EqualError(t, errEnriched, expected, "error message mismatch, got %s want %s", errEnriched, expected)
+		require.EqualError(t, errEnriched, expected, "error message mismatch, got %s want %s", errEnriched, expected)
 
-		//nolint:errorlint
 		errKV, ok := errEnriched.(enrichedError)
-		assert.True(t, ok, "error does not implement enrichedError interface")
-		assert.Equal(t, []interface{}{"block_hash", "0X0"}, errKV.Tuples())
+		require.True(t, ok, "error does not implement enrichedError interface")
+		require.Equal(t, []interface{}{"block_hash", "0X0"}, errKV.Tuples())
 
 		expected2 := "stream blocks: failed: oops"
-		assert.EqualError(t, errEnriched2, expected2, "error message mismatch, got %s want %s", errEnriched, expected)
+		require.EqualError(t, errEnriched2, expected2, "error message mismatch, got %s want %s", errEnriched, expected)
 
-		//nolint:errorlint
 		errKV, ok = errEnriched2.(enrichedError)
-		assert.True(t, ok, "error does not implement enrichedError interface")
-		assert.Equal(t, []interface{}{"bInt", big.NewInt(42), "block_hash", "0X0"}, errKV.Tuples())
+		require.True(t, ok, "error does not implement enrichedError interface")
+		require.Equal(t, []interface{}{"bInt", big.NewInt(42), "block_hash", "0X0"}, errKV.Tuples())
 	})
 }
 
@@ -272,13 +264,13 @@ func Test_Unwrap(t *testing.T) {
 		require.Error(t, errWrap, "it is not an error")
 
 		expected := "oops: failed"
-		assert.EqualError(t, errWrap, expected, "error message mismatch, got %s want %s", errWrap, expected)
+		require.EqualError(t, errWrap, expected, "error message mismatch, got %s want %s", errWrap, expected)
 
 		uErr := errors.Unwrap(errWrap)
-		require.NotNil(t, uErr, "err does not implement Unwrap interface")
+		require.Error(t, uErr, "err does not implement Unwrap interface")
 
 		expected = "failed"
-		assert.EqualError(t, uErr, expected, "error message mismatch, got %s want %s", uErr, expected)
+		require.EqualError(t, uErr, expected, "error message mismatch, got %s want %s", uErr, expected)
 	})
 
 	t.Run("Unwrap for errors.Wrapf", func(t *testing.T) {
@@ -290,13 +282,13 @@ func Test_Unwrap(t *testing.T) {
 		require.Error(t, errWrap, "it is not an error")
 
 		expected := "oops id 5: failed"
-		assert.EqualError(t, errWrap, expected, "error message mismatch, got %s want %s", errWrap, expected)
+		require.EqualError(t, errWrap, expected, "error message mismatch, got %s want %s", errWrap, expected)
 
 		uErr := errors.Unwrap(errWrap)
-		require.NotNil(t, uErr, "err does not implement Unwrap interface")
+		require.Error(t, uErr, "err does not implement Unwrap interface")
 
 		expected = "failed"
-		assert.EqualError(t, uErr, expected, "error message mismatch, got %s want %s", uErr, expected)
+		require.EqualError(t, uErr, expected, "error message mismatch, got %s want %s", uErr, expected)
 	})
 
 	t.Run("Unwrap for errors.WrapWithError", func(t *testing.T) {
@@ -309,10 +301,10 @@ func Test_Unwrap(t *testing.T) {
 		require.Error(t, errWrap, "it is not an error")
 
 		uErr := errors.Unwrap(errWrap)
-		require.NotNil(t, uErr, "err does not implement Unwrap interface")
+		require.Error(t, uErr, "err does not implement Unwrap interface")
 
 		expected := "oops"
-		assert.EqualError(t, uErr, expected, "error message mismatch, got %s want %s", uErr, expected)
+		require.EqualError(t, uErr, expected, "error message mismatch, got %s want %s", uErr, expected)
 	})
 
 	t.Run("Unwrap for errors.Enrich", func(t *testing.T) {
@@ -324,10 +316,10 @@ func Test_Unwrap(t *testing.T) {
 		require.Error(t, errEnriched, "it is not an error")
 
 		uErr := errors.Unwrap(errEnriched)
-		require.NotNil(t, uErr, "err does not implement Unwrap interface")
+		require.Error(t, uErr, "err does not implement Unwrap interface")
 
 		expected := "failed"
-		assert.EqualError(t, uErr, expected, "error message mismatch, got %s want %s", uErr, expected)
+		require.EqualError(t, uErr, expected, "error message mismatch, got %s want %s", uErr, expected)
 	})
 
 	t.Run("Unwrap for errors.EnrichWrapWithError", func(t *testing.T) {
@@ -340,24 +332,23 @@ func Test_Unwrap(t *testing.T) {
 		require.Error(t, errEnriched, "it is not an error")
 
 		expected := "oops: failed"
-		assert.EqualError(t, errEnriched, expected, "error message mismatch, got %s want %s", errEnriched, expected)
+		require.EqualError(t, errEnriched, expected, "error message mismatch, got %s want %s", errEnriched, expected)
 
-		//nolint:errorlint
 		errKV, ok := errEnriched.(enrichedError)
-		assert.True(t, ok, "error does not implement enrichedError interface")
-		assert.Equal(t, []interface{}{"id", 5}, errKV.Tuples())
+		require.True(t, ok, "error does not implement enrichedError interface")
+		require.Equal(t, []interface{}{"id", 5}, errKV.Tuples())
 
 		errWrap := errors.Unwrap(errEnriched)
-		require.NotNil(t, errWrap, "err does not implement Unwrap interface")
+		require.Error(t, errWrap, "err does not implement Unwrap interface")
 
 		expected = "oops: failed"
-		assert.EqualError(t, errWrap, expected, "error message mismatch, got %s want %s", errWrap, expected)
+		require.EqualError(t, errWrap, expected, "error message mismatch, got %s want %s", errWrap, expected)
 
 		uErr := errors.Unwrap(errWrap)
-		require.NotNil(t, uErr, "err does not implement Unwrap interface")
+		require.Error(t, uErr, "err does not implement Unwrap interface")
 
 		expected = "oops"
-		assert.EqualError(t, uErr, expected, "error message mismatch, got %s want %s", uErr, expected)
+		require.EqualError(t, uErr, expected, "error message mismatch, got %s want %s", uErr, expected)
 	})
 }
 
@@ -374,10 +365,10 @@ func Test_Cause(t *testing.T) {
 		require.Error(t, errWrap, "it is not an error")
 
 		cErr := errors.Cause(errWrap)
-		require.NotNil(t, cErr, "err does not implement Cause interface")
+		require.Error(t, cErr, "err does not implement Cause interface")
 
 		expected := "failed"
-		assert.EqualError(t, cErr, expected, "error message mismatch, got %s want %s", cErr, expected)
+		require.EqualError(t, cErr, expected, "error message mismatch, got %s want %s", cErr, expected)
 	})
 }
 
@@ -391,7 +382,7 @@ func Test_Is(t *testing.T) {
 		require.Error(t, err, "it is not an error")
 
 		expected := errors.New("failed")
-		assert.ErrorIs(t, err, expected)
+		require.ErrorIs(t, err, expected)
 	})
 
 	t.Run("no Is for errors.New", func(t *testing.T) {
@@ -400,7 +391,7 @@ func Test_Is(t *testing.T) {
 		err := errors.New("failed")
 		require.Error(t, err, "it is not an error")
 
-		assert.NotErrorIs(t, err, context.Canceled)
+		require.NotErrorIs(t, err, context.Canceled)
 	})
 
 	t.Run("Is for errors.Newf", func(t *testing.T) {
@@ -410,7 +401,7 @@ func Test_Is(t *testing.T) {
 		require.Error(t, err, "it is not an error")
 
 		expected := errors.New("oops: failed")
-		assert.ErrorIs(t, err, expected)
+		require.ErrorIs(t, err, expected)
 	})
 
 	t.Run("Is for errors.Wrap", func(t *testing.T) {
@@ -422,7 +413,7 @@ func Test_Is(t *testing.T) {
 		require.Error(t, errWrap, "it is not an error")
 
 		expected := errors.New("failed")
-		assert.ErrorIs(t, errWrap, expected)
+		require.ErrorIs(t, errWrap, expected)
 	})
 
 	t.Run("Is for errors.Wrapf", func(t *testing.T) {
@@ -434,7 +425,7 @@ func Test_Is(t *testing.T) {
 		require.Error(t, errWrap, "it is not an error")
 
 		expected := errors.New("failed")
-		assert.ErrorIs(t, errWrap, expected)
+		require.ErrorIs(t, errWrap, expected)
 	})
 
 	t.Run("Is for errors.WrapWithError", func(t *testing.T) {
@@ -446,11 +437,11 @@ func Test_Is(t *testing.T) {
 		errWrap := errors.WrapError(err, sErr)
 		require.Error(t, errWrap, "it is not an error")
 
-		assert.EqualError(t, errWrap, "oops: failed")
+		require.EqualError(t, errWrap, "oops: failed")
 
-		assert.ErrorIs(t, errWrap, err)
+		require.ErrorIs(t, errWrap, err)
 
-		assert.ErrorIs(t, errWrap, sErr)
+		require.ErrorIs(t, errWrap, sErr)
 	})
 
 	t.Run("no Is for errors.WrapWithError", func(t *testing.T) {
@@ -462,7 +453,7 @@ func Test_Is(t *testing.T) {
 		errWrap := errors.WrapError(err, sErr)
 		require.Error(t, errWrap, "it is not an error")
 
-		assert.NotErrorIs(t, errWrap, context.Canceled)
+		require.NotErrorIs(t, errWrap, context.Canceled)
 	})
 
 	t.Run("Is for errors.WrapWithError two levels", func(t *testing.T) {
@@ -477,11 +468,11 @@ func Test_Is(t *testing.T) {
 		errWrap = errors.WrapError(errWrap, sErr2)
 		require.Error(t, errWrap, "it is not an error")
 
-		assert.ErrorIs(t, errWrap, sErr1)
+		require.ErrorIs(t, errWrap, sErr1)
 
-		assert.ErrorIs(t, errWrap, sErr2)
+		require.ErrorIs(t, errWrap, sErr2)
 
-		assert.ErrorIs(t, errWrap, context.Canceled)
+		require.ErrorIs(t, errWrap, context.Canceled)
 	})
 
 	t.Run("Is for errors.Enrich", func(t *testing.T) {
@@ -492,14 +483,13 @@ func Test_Is(t *testing.T) {
 		errEnrich := errors.Enrich(err, "id", 5)
 		require.Error(t, errEnrich, "it is not an error")
 
-		assert.EqualError(t, errEnrich, "failed")
+		require.EqualError(t, errEnrich, "failed")
 
-		//nolint:errorlint
 		errKV, ok := errEnrich.(enrichedError)
-		assert.True(t, ok, "error does not implement enrichedError interface")
-		assert.Equal(t, []interface{}{"id", 5}, errKV.Tuples())
+		require.True(t, ok, "error does not implement enrichedError interface")
+		require.Equal(t, []interface{}{"id", 5}, errKV.Tuples())
 
-		assert.ErrorIs(t, errEnrich, err)
+		require.ErrorIs(t, errEnrich, err)
 	})
 
 	t.Run("no Is for errors.Enrich", func(t *testing.T) {
@@ -510,6 +500,6 @@ func Test_Is(t *testing.T) {
 		errEnrich := errors.Enrich(err, "id", 5)
 		require.Error(t, errEnrich, "it is not an error")
 
-		assert.NotErrorIs(t, errEnrich, context.Canceled)
+		require.NotErrorIs(t, errEnrich, context.Canceled)
 	})
 }
