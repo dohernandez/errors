@@ -3,7 +3,7 @@ module github.com/dohernandez/errors
 go 1.23.3
 
 require (
-	github.com/bool64/dev v0.2.36
+	github.com/bool64/dev v0.2.39
 	github.com/stretchr/testify v1.10.0
 )
 
